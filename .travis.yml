@@ -1,0 +1,10 @@
+sudo: required
+dist: trusty
+services:
+  - docker
+language: python
+install:
+  - docker build -t container .
+script:
+  - docker run -p 6311:6311 -d container
+  - telnet localhost 6311
