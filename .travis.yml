@@ -6,7 +6,7 @@ language: python
 install:
   - docker build -t container .
 script:
-  - docker run -p 6311:6311 -d container
-  - telnet localhost 6311
+  - docker run --name cont -p 6311:6311 -d container
+  - docker ps | grep -q cont
 after_success:
   - curl -H "Content-Type: application/json" --data '{"build: true}' -X POST $DOCKER_ENDPOINT 
