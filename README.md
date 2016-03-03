@@ -8,6 +8,11 @@ given that Tableau isn't available for Linux, the majority of Linux users have t
 (or borrow someone's mac?).  This container is meant to be a quick way to spin up a background instance of Rserve
 that Tableau can communicate to, without having to install Rserve on either your host or guest machines.
 
+Pull the image with
+```bash
+docker pull stevenpollack/docker-rserve
+```
+
 ## Notes:
 - [Dockerhub link](https://hub.docker.com/r/stevenpollack/docker-rserve/)
 - Uses `debian:8.3` as a base image, and miniconda as the source for base-R -- so it's not super light-weight,
@@ -15,7 +20,7 @@ that Tableau can communicate to, without having to install Rserve on either your
 - Be sure to map the container's port 6311 to your localhost's 6311:
 
     ```bash
-    docker run --name Rserver -p 6311:6311 -d docker-rserve
+    docker run --name Rserver -p 6311:6311 -d stevenpollack/docker-rserve
     ```
 - See
   [this](http://stackoverflow.com/questions/20265682/finding-rserve-rconfig-file-on-ubuntu-13-10)
