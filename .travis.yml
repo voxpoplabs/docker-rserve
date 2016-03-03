@@ -9,4 +9,5 @@ script:
   - docker run --name cont -p 6311:6311 -d container
   - docker ps | grep -q cont
 after_success:
+  - sudo apt-get install -y curl
   - curl -H "Content-Type: application/json" --data '{"build: true}' -X POST $DOCKER_ENDPOINT 
