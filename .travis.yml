@@ -10,4 +10,4 @@ script:
   - docker ps | grep -q cont
 after_success:
   - sudo apt-get install -y curl
-  - ./trigger_docker_build.sh
+  - source trigger_docker_build.sh
