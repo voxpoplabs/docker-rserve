@@ -20,3 +20,7 @@ that Tableau can communicate to, without having to install Rserve on either your
 - See
   [this](http://stackoverflow.com/questions/20265682/finding-rserve-rconfig-file-on-ubuntu-13-10)
   stackoverflow post for setting the `/etc/Rserv.conf` file
+
+## TODO:
+- Need to allow a way for users to specify the packages to be loaded before
+  Rserve is started.
