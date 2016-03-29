@@ -1,0 +1,10 @@
+# vim:set ft=dockerfile:
+
+FROM stevenpollack/docker-rserve:latest
+
+MAINTAINER "Steven Pollack" steven@gnobel.com
+
+RUN conda install -y --channel r \ 
+    r-randomforest \
+    r-stringr \
+    r-zoo 
