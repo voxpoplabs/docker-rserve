@@ -16,15 +16,17 @@ There are two containers available for pulling,
     docker pull stevenpollack/docker-rserve
     ```
   
-  This image contains all the standard R packages available through [rocker/r-base]() as well as `Rserve`,
-  and has a standard `Rserve` serve (with port 6311 exposed) running as its entrypoint.
+  This image contains all the standard R packages available through [rocker/r-base](https://hub.docker.com/r/rocker/r-base/)
+  as well as `Rserve`, and has a standard `Rserve` server (with port 6311 exposed) running as its
+  entrypoint.
 2. The demonstrative `btug` container:
 
     ```bash
     docker pull stevenpollack/btug
     ```
   
-  This is based off of `stevenpollack/docker-rserve`, but also contains `devtools`, `BayesianFirstAid`,
+  This is based off of `stevenpollack/docker-rserve`, but also contains `devtools`,
+  [`BayesianFirstAid`](https://github.com/rasmusab/bayesian_first_aid),
   `randomForest`, and `hopach` R packages (these are used in a tableau workbook to demonstrate ways to
   integrate R and Tableau).
 
