@@ -1,6 +1,3 @@
-[![Build
-Status](https://travis-ci.org/stevenpollack/docker-rserve.svg?branch=master)](https://travis-ci.org/stevenpollack/docker-rserve)
-
 ## Docker Containers for Rserve
 
 [Rserve](http://www.rforge.net/Rserve/index.html) allows for R and Tableau (among others) to communicate. However,
@@ -39,7 +36,7 @@ in the background, **BEFORE** starting Tableau. E.g.
 docker run --name BTUG -p 6311:6311 -d stevenpollack/btug
 ```
 
-### N.B.
-If you want to fork this and do your own crazy stuff, you'll probably want to know how to mess with
+***N.B.,***
+if you want to fork this and do your own crazy stuff, you'll probably want to know how to mess with
 `Rserve`. In which case, check out [this](http://stackoverflow.com/questions/20265682/finding-rserve-rconfig-file-on-ubuntu-13-10)
 stackoverflow post for setting the `/etc/Rserv.conf` file
