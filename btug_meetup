@@ -1,10 +1,32 @@
-# vim:set ft=dockerfile:
-
 FROM stevenpollack/docker-rserve:latest
 
 MAINTAINER "Steven Pollack" steven@gnobel.com
 
 RUN conda install -y --channel r \ 
+    r-devtools \
     r-randomforest \
     r-stringr \
     r-zoo 
+
+# install bayesian_first_aid
+RUN apt-get install -y \
+    build-essential \
+    gfortran \
+    liblapack-dev 
+    #g++ \
+    #make \
+    #libc6-dev
+
+# install JAGS 4.2.0
+ADD http://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Source/JAGS-4.2.0.tar.gz?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fmcmc-jags%2Ffiles%2FJAGS%2F4.x%2FSource%2F&ts=1459864063&use_mirror=ufpr /tmp/jags.tar.gz
+
+RUN cd /tmp/ && \
+    tar -xvz -f jags.tar.gz && \
+    cd JAGS-4.2.0 && \
+    ./configure && \
+    make && \ 
+    make install
+
+RUN Rscript -e "options(unzip = 'internal'); httr::set_config( httr::config( ssl_verifypeer = 0L ) ); devtools::install_github('rasmusab/bayesian_first_aid')"
+
+COPY *.rdata /models/
