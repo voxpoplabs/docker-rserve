@@ -1,31 +1,43 @@
 [![Build
 Status](https://travis-ci.org/stevenpollack/docker-rserve.svg?branch=master)](https://travis-ci.org/stevenpollack/docker-rserve)
 
-## Docker Container for Rserve
+## Docker Containers for Rserve
 
 [Rserve](http://www.rforge.net/Rserve/index.html) allows for R and Tableau (among others) to communicate. However,
 given that Tableau isn't available for Linux, the majority of Linux users have to run tableau through a VM
 (or borrow someone's mac?).  This container is meant to be a quick way to spin up a background instance of Rserve
 that Tableau can communicate to, without having to install Rserve on either your host or guest machines.
 
-Pull the image with
-```bash
-docker pull stevenpollack/docker-rserve
-```
+There are two containers available for pulling,
 
-## Notes:
-- [Dockerhub link](https://hub.docker.com/r/stevenpollack/docker-rserve/)
-- Uses `debian:8.3` as a base image, and miniconda as the source for base-R -- so it's not super light-weight,
-  but still lighter than if you pulled down `rocker/base-r`. 
-- Be sure to map the container's port 6311 to your localhost's 6311:
+1. The bare-metal `Rserve` server:
+    
+    ```bash
+    docker pull stevenpollack/docker-rserve
+    ```
+  
+  This image contains all the standard R packages available through [rocker/r-base]() as well as `Rserve`,
+  and has a standard `Rserve` serve (with port 6311 exposed) running as its entrypoint.
+2. The demonstrative `btug` container:
 
     ```bash
-    docker run --name Rserver -p 6311:6311 -d stevenpollack/docker-rserve
+    docker pull stevenpollack/btug
     ```
-- See
-  [this](http://stackoverflow.com/questions/20265682/finding-rserve-rconfig-file-on-ubuntu-13-10)
-  stackoverflow post for setting the `/etc/Rserv.conf` file
+  
+  This is based off of `stevenpollack/docker-rserve`, but also contains `devtools`, `BayesianFirstAid`,
+  `randomForest`, and `hopach` R packages (these are used in a tableau workbook to demonstrate ways to
+  integrate R and Tableau).
 
-## TODO:
-- Need to allow a way for users to specify the packages to be loaded before
-  Rserve is started.
+## Running the containers:
+
+You'll want to be sure to map the container's port 6311 to your localhost's 6311 and run the container
+in the background, **BEFORE** starting Tableau. E.g.
+
+```bash
+docker run --name BTUG -p 6311:6311 -d stevenpollack/btug
+```
+
+### N.B.
+If you want to fork this and do your own crazy stuff, you'll probably want to know how to mess with
+`Rserve`. In which case, check out [this](http://stackoverflow.com/questions/20265682/finding-rserve-rconfig-file-on-ubuntu-13-10)
+stackoverflow post for setting the `/etc/Rserv.conf` file
