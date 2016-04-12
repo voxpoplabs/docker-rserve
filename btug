@@ -21,6 +21,7 @@ RUN apt-get update && \
 RUN install2.r --error \
     -r "https://cran.rstudio.com" \ 
     -r "http://www.bioconductor.org/packages/release/bioc" \
+    data.table \
     devtools \
     hopach \
     randomForest \
@@ -36,6 +37,7 @@ RUN install2.r --error \
 # it won't let you connect to the container
 EXPOSE 6311
 ENTRYPOINT R -e "\
+library(data.table); \
 library(DBI); \
 library(hopach); \
 library(httr); \
@@ -53,7 +55,7 @@ dbConfig[['host']] <- Sys.getenv('MYSQL_PORT_3306_TCP_ADDR'); \
 print(str(dbConfig)); \
 tryCatch({ \
   dbConn <- do.call(dbConnect, dbConfig); \
-  dbConn %T>% dbGetQuery('CREATE DATABASE IF NOT EXISTS tableau;') %T>% dbGetQuery('USE tableau;') %>% dbGetQuery('SHOW DATABASES;');\ 
+  dbConn %T>% dbGetQuery('SET NAMES \'utf8\';') %T>% dbGetQuery('CREATE DATABASE IF NOT EXISTS tableau;') %T>% dbGetQuery('USE tableau;') %>% dbGetQuery('SHOW DATABASES;');\ 
 }, error = function(e) { \
   print(e[['message']]); \
   }); \
