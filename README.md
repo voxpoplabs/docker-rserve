@@ -24,8 +24,14 @@ There are two containers available for pulling,
   
   This is based off of `stevenpollack/docker-rserve`, but also contains `devtools`,
   [`BayesianFirstAid`](https://github.com/rasmusab/bayesian_first_aid),
-  `randomForest`, and `hopach` R packages (these are used in a tableau workbook to demonstrate ways to
-  integrate R and Tableau).
+  `randomForest`, `RMySQL` and `hopach` R packages (these are used in a tableau workbook to
+  demonstrate ways to integrate R and Tableau). Note that if you want to truly follow along
+  with the notebook, you'll need MySQL installed on your computer. The easiest way to do
+  this is with (again) docker's [mysql container](https://hub.docker.com/r/library/mysql/):
+  
+    ```bash
+    docker pull mysql
+    ```
 
 ## Running the containers:
 
@@ -35,6 +41,16 @@ in the background, **BEFORE** starting Tableau. E.g.
 ```bash
 docker run --name BTUG -p 6311:6311 -d stevenpollack/btug
 ```
+
+If you are using the docker instance of MySQL, you'll want to link the two containers:
+
+```bash
+docker run --name MYSQL -p 3306:3306 -e MYSQL_ROOT_PASSWORD=swordfish -d mysql
+docker run --name RSERVE --link MYSQL:mysql -p 6311:6311 -d stevenpollack/btug
+```
+the first command starts up the MySQL server, and the second command starts up the Rserve
+serve, but links the MySQL container to it, so we can connect to it upon initialization.
+(You can see how I wired that up by looking at the [btug dockerfile](btug)).
 
 ***N.B.,***
 if you want to fork this and do your own crazy stuff, you'll probably want to know how to mess with
