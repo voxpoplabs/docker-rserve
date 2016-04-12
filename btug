@@ -5,10 +5,12 @@ MAINTAINER "Steven Pollack" steven@gnobel.com
 
 # jags for rjags
 # libcurl4 & libssl for devtools
+# libmysqlclient for RMySQL
 RUN apt-get update && \
     apt-get install -y \
     jags \
     libcurl4-openssl-dev \
+    libmysqlclient-dev \
     libssl-dev && \
     apt-get clean  && \
     rm -rf /var/lib/apt/lists/
@@ -22,7 +24,8 @@ RUN install2.r --error \
     devtools \
     hopach \
     randomForest \
-    rjags && \
+    rjags \
+    RMySQL && \
     Rscript -e " \
     options(unzip = 'internal'); \
     httr::set_config( httr::config( ssl_verifypeer = 0L ) ); \
@@ -33,8 +36,26 @@ RUN install2.r --error \
 # it won't let you connect to the container
 EXPOSE 6311
 ENTRYPOINT R -e "\
+library(DBI); \
 library(hopach); \
+library(httr); \
+library(magrittr); \
 library(randomForest); \
+library(RMySQL); \
 library(BayesianFirstAid); \
+# initialize connection to mysql and create \
+# temporary tableau schema 
+dbConfig <- list(); \
+dbConfig[['drv']] <- MySQL(); \
+dbConfig[['password']] <- Sys.getenv('MYSQL_ENV_MYSQL_ROOT_PASSWORD'); \
+dbConfig[['port']] <- as.integer(Sys.getenv('MYSQL_PORT_3306_TCP_PORT')); \
+dbConfig[['host']] <- Sys.getenv('MYSQL_PORT_3306_TCP_ADDR'); \
+print(str(dbConfig)); \
+tryCatch({ \
+  dbConn <- do.call(dbConnect, dbConfig); \
+  dbConn %T>% dbGetQuery('CREATE DATABASE IF NOT EXISTS tableau;') %T>% dbGetQuery('USE tableau;') %>% dbGetQuery('SHOW DATABASES;');\ 
+}, error = function(e) { \
+  print(e[['message']]); \
+  }); \
 Rserve::run.Rserve(remote=TRUE)"
 
