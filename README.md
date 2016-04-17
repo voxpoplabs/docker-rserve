@@ -94,3 +94,10 @@ special this should just be `6311`. Go ahead and click the _Test Connection_ but
 see a popup saying something like
 
 > Successfully connected to the Rserve service.
+
+If you encounter any errors and you're running Rserve through a container, be sure to
+check that you've started Rserve with `remote=TRUE` (from within R):
+
+```R
+Rserve::run.Rserve(remote=TRUE)
+```
