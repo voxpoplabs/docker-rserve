@@ -2,11 +2,11 @@ Using Docker and Tableau in OS X
 ====================
 
 
-`docker` on OS X is not like `docker` on linux. It runs in a VM with it's on IP. Thus,
+`docker` on OS X is not like `docker` on linux. It runs in a VM with its own IP. Thus,
 even if you initialize the docker container with something like
 
 ```
-docker run --name Rserver -p 6311:6311 -d stevenpollack/docker-rserve
+docker run --name Rserver -p 6311:6311 -d stevenpollack/btug
 ```
 
 When you goto _Help_ > _Settings and Performance_ > _Manage R Connection_ to check the connection:
