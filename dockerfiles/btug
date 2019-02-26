@@ -31,6 +31,7 @@ RUN install2.r --error \
     options(unzip = 'internal'); \
     httr::set_config( httr::config( ssl_verifypeer = 0L ) ); \
     devtools::install_github('rasmusab/bayesian_first_aid')" && \ 
+    devtools::install_github('mlampros/ClusterR')" && \ 
     rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 # you have to run Rserve with remote=TRUE otherwise
@@ -45,6 +46,7 @@ library(magrittr); \
 library(randomForest); \
 library(RMySQL); \
 library(BayesianFirstAid); \
+library(ClusterR); \
 # initialize connection to mysql and create \
 # temporary tableau schema 
 dbConfig <- list(); \
